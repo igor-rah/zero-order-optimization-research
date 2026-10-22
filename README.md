@@ -1,20 +1,6 @@
 # Zero-Order Optimization Research
 
-Research project on zeroth-order (gradient-free) convex optimization with structured deterministic noise.
-
-**Igor Bryzhikov** (MIPT), supervised by **Prof. Alexander V. Gasnikov**. Work in progress, not peer-reviewed; all experiments are small-scale.
-
-**Current problem.** Deterministic bounded noise is usually analysed as adversarial. We study noise that is *orthogonal to the randomization only on average over a Markov state*, $\mathbb E_{s\sim\pi}\mathbb E_e[\delta(x+\gamma e,s)\,e]=0$, and aim at two-sided bounds on its maximal admissible level, to be compared with the adversarial thresholds. The motivating example is floating-point rounding of function values in low-precision zeroth-order (MeZO-style) fine-tuning, which behaves as a lazy Markov chain driven by the data and by the method itself.
-
-## Key findings so far
-
-- **bf16 rounding of the loss value breaks MeZO at the default radius.** With μ = 10⁻³, 91% of steps are ties (the two rounded values are equal, so the step is zero), and the eval loss rises 1.97 → 2.39 instead of falling (fp32 reaches 1.86). A 10× larger radius makes rounding harmless: loss drop 0.102 vs 0.107 in fp32.
-- **On convex problems the accuracy floor is U-shaped in the radius, and the window of good radii closes** at a precision-dependent ε_min, which lies 2–4 orders of magnitude below the rounding level.
-- **The rounding error behaves as a lazy Markov chain.** Its memory follows the data chain; with lazy (reused) data the method drives its own offset into a frozen region, and the harm of rounding turns into paralysis.
-- **At good radii rounding costs nothing beyond the data's own Markov cost**, both on the convex problem and in MeZO.
-- **Every closed-form law used in the analysis is checked numerically**: 84 + 27 Monte Carlo / quadrature checks, all pass.
-
-![MeZO with a bf16-rounded loss](experiments/rounded_oracle_mezo/zo_bf16_rounding.png)
+Research on zeroth-order (gradient-free) optimization.
 
 ## Structure
 
