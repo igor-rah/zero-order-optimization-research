@@ -1,9 +1,9 @@
 # Private part of the working tree (separate private git repository)
 private/
 
-# Paper drafts are kept private until approved
-paper/*
-!paper/.gitkeep
+# Paper drafts are kept private until approved (every project)
+projects/*/paper/*
+!projects/*/paper/.gitkeep
 
 # macOS
 .DS_Store
