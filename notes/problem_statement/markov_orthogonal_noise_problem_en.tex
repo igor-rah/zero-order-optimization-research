@@ -1,0 +1,108 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.7cm,top=1.4cm,bottom=1.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem,booktabs,xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+\setlist{itemsep=2pt,topsep=3pt}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\lVert #1\rVert}\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\Dmax}{\Delta_{\max}}
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\tcbset{box/.style={colback=blue!3,colframe=blue!50!black,boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=4pt,bottom=4pt,fonttitle=\bfseries}}
+\title{\textbf{Admissible level of deterministic noise\\ that is orthogonal to the randomization on average over a Markov state}}
+\author{Working problem statement\\ I.~Bryzhikov (MIPT), October 2026}
+\date{}
+\begin{document}\sloppy
+\maketitle
+\vspace{-1.5em}
+
+\section*{1. Context}
+We consider gradient-free minimization of a convex function $f$ on a ball of radius $R$ in $\R^d$ by the two-point method
+\[
+\hat g(x)=\frac{d}{2\gamma}\big(O(x+\gamma e)-O(x-\gamma e)\big)\,e,\qquad e\sim\mathrm{Unif}(S^{d-1}),
+\]
+where $O$ is the function value with an error and $\gamma$ is the smoothing radius.
+
+\paragraph{Adversarial model.} The oracle is $O(x)=f(x)+\delta(x)$ with $\abs{\delta(x)}\le\Delta$; the error is fixed (a repeated query returns the same answer) and may depend on $x$ arbitrarily. The noise then adds a \emph{bias} of order $\sqrt d\,\Delta/\gamma$ to the gradient estimate, and accuracy $\varepsilon$ requires $\Delta\lesssim\varepsilon\gamma/(\sqrt d R)$. The maximal admissible noise level in this model is now known up to logarithmic factors \cite{pasechnyuk,risteski}:
+\begin{align*}
+\Dmax^{\rm adv}&\asymp\frac{\varepsilon^2}{\sqrt d\,MR} && \text{($M$-Lipschitz $f$)},\\
+\Dmax^{\rm adv}&\asymp\frac{\varepsilon^{3/2}}{\sqrt d\,\sqrt L\,R} && \text{($L$-smooth $f$, Lipschitz with $M\sim\sqrt{L\varepsilon}$)}.
+\end{align*}
+
+\paragraph{Orthogonality to the randomization} (survey \cite{survey}, \S4.4):
+\begin{equation}\label{eq:orth}
+\E_e\big[\delta(x+\gamma e)\,e\big]=0\qquad\forall x .
+\end{equation}
+Under \eqref{eq:orth} the noise causes no bias and enters only the variance of the estimate; heuristically the remaining condition is $d\Delta^2/\gamma^2\lesssim M^2$, i.e.\ $\Delta\lesssim M\gamma/\sqrt d$ (for Lipschitz $f$ with $\gamma\sim\varepsilon/M$ this is $\varepsilon/\sqrt d$, a factor $MR/\varepsilon$ above the adversarial threshold). In practice, however, condition \eqref{eq:orth} almost never holds pointwise, at every $x$. The typical situation is that it holds \emph{on average over some state} that changes over time.
+
+\paragraph{Markovian noise.} It is shown in \cite{prokhorov} that for gradient-free methods with Markovian stochastic noise (mixing time $\tau$, a chain that does not depend on the iterates) the cost of correlation is additive: the oracle complexity grows as $d+\tau$ rather than $d\tau$. A deterministic error is handled there only as a bounded adversarial one.
+
+\section*{2. Noise class}
+\begin{definition}[Noise orthogonal to the randomization on average over a Markov state]
+At step $k$ the oracle returns $O(x,s_k)=f(x)+\delta(x,s_k)$, and both queries of the two-point estimate are made in the same state $s_k$. We assume:
+\begin{enumerate}[label=(\roman*)]
+\item $\abs{\delta(x,s)}\le\Delta$ for all $x,s$;
+\item $\{s_k\}$ is a uniformly geometrically ergodic Markov chain with stationary law $\pi$ and mixing time $\tau$;
+\item condition \eqref{eq:orth} holds under the stationary law:
+\begin{equation}\label{eq:orth-pi}
+\E_{s\sim\pi}\,\E_e\big[\delta(x+\gamma e,s)\,e\big]=0\qquad\forall x ;
+\end{equation}
+for a fixed $s$ the noise may be biased.
+\end{enumerate}
+The class is denoted $\mathcal N(\Delta,\tau,\gamma)$.
+\end{definition}
+
+\paragraph{Laziness.} The main mechanism of slow mixing is the \emph{laziness} of the chain: with probability $\alpha$ the state does not change at a step,
+\[
+P_{\rm lazy}=\alpha I+(1-\alpha)P,\qquad \text{mean holding time}\ \tfrac1{1-\alpha},\qquad \tau\gtrsim\tfrac1{1-\alpha}.
+\]
+While a state $s$ is held, the noise $\delta(\cdot,s)$ is the same, and its bias for fixed $s$ repeats instead of averaging out: over $\sim\tau$ steps the deterministic error behaves like an adversarial one. Condition \eqref{eq:orth-pi} starts to ``work'' only on the scale of the mixing time. In the limiting case $\alpha=1$ on part of the states (absorption) the chain does not mix at all.
+
+\paragraph{Special cases.}
+\begin{itemize}
+\item $\tau=1$ (independent states): the stochastic axiomatics of condition \eqref{eq:orth};
+\item an external Markov data chain: the model of \cite{prokhorov} with an additional deterministic component;
+\item \emph{rounding} of function values to the grid $u\mathbb Z$: the state is the position of $f(x)$ on the grid (the offset). It is moved both by the data and by the method itself: on a step where the two rounded values coincide (a ``tie'') the point does not move, and with the same data the offset repeats. This is a lazy chain with holding probability $\alpha=P_{\rm tie}(\omega,r)=2\Phi\big((\tfrac12-\abs\omega)/r\big)-1$, where $\omega$ is the offset and $r=\gamma\norm{\nabla f}/u$; the kernel of the chain depends on the iterates, and for $r\ll1$ and unchanged data the states in the middle of a cell are practically absorbing. For this case condition \eqref{eq:orth-pi} has been verified exactly: for $f$ affine on the stencil and Gaussian directions, $\E_e\hat g=\kappa(c,r)\nabla f$, where $\kappa$ is a wrapped Gaussian of the offset $c$ with width $r=\gamma\norm{\nabla f}/u$, and $\int_0^1\kappa\,dc=1$.
+\end{itemize}
+
+\section*{3. Problem}
+\begin{tcolorbox}[box,title={Goal}]
+For the class $\mathcal N(\Delta,\tau,\gamma)$ and the classes of Lipschitz and smooth convex functions, determine
+\[
+\Dmax(\varepsilon,d,\tau,\gamma)=\sup\big\{\Delta:\ \exists\,\mathcal A\ \ \forall f\ \ \forall\delta\in\mathcal N(\Delta,\tau,\gamma):\ \ \E f(\hat x_{\mathcal A})-f^*\le\varepsilon\big\},
+\]
+where $\mathcal A$ is an algorithm with a polynomial number of oracle calls,
+and obtain two-sided bounds on it:
+\begin{itemize}
+\item \textbf{upper bound}: a construction of a hard function and an admissible noise for which no algorithm reaches accuracy $\varepsilon$ (the existence side, following the scheme of \cite{pasechnyuk});
+\item \textbf{lower bound}: a two-point method with explicit parameters (radius, batch, step) that reaches $\varepsilon$ for the given $\Delta$.
+\end{itemize}
+Compare the resulting thresholds with the adversarial $\Dmax^{\rm adv}$.
+\end{tcolorbox}
+
+\paragraph{Expected picture.}
+\[
+\Dmax^{\rm adv}\ \lesssim\ \Dmax(\varepsilon,d,\tau,\gamma)\ \lesssim\ \frac{M\gamma}{\sqrt d}.
+\]
+While the chain mixes, the threshold is determined by the variance and deteriorates as $\tau$ grows, i.e.\ as the laziness $\alpha$ grows: the bias accumulates over the holding time. When mixing breaks down ($\alpha\to1$, absorbing states), the adversarial regime returns. A separate question is how the threshold depends on laziness generated by the method itself (rounding) rather than by an external chain.
+
+\paragraph{Plan of work.}
+\begin{enumerate}
+\item $\tau=1$: rewrite the bound of \S4.4 \cite{survey} in terms of the variance; construct a hard function for the class with condition \eqref{eq:orth} in stochastic form.
+\item External chain, $\tau>1$: transfer the technique of \cite{prokhorov} (a direction per sample, multilevel Monte Carlo) to the component that is biased for a fixed state; obtain the dependence of the threshold on $\tau$.
+\item Lazy chain that depends on the iterates (rounding): relation between laziness and the tie probability, mixing conditions, absorbing states, comparison with the adversarial threshold.
+\end{enumerate}
+
+\paragraph{Notation.} The smoothing radius is $\gamma$ here and $\mu$ in the experiments of this repository; they denote the same quantity.
+
+\begin{thebibliography}{9}\small
+\bibitem{survey} A.~Gasnikov, D.~Dvinskikh, P.~Dvurechensky, E.~Gorbunov, A.~Beznosikov, A.~Lobanov. Randomized gradient-free methods in convex optimization. \emph{Encyclopedia of Optimization}; arXiv:2211.13566.
+\bibitem{pasechnyuk} D.~Pasechnyuk-Vilensky, I.~Pavlov, M.~Takáč, A.~Gasnikov. Information-theoretic upper bounds for deterministic noise in zeroth-order convex optimization. arXiv:2306.16371v5, 2026.
+\bibitem{risteski} A.~Risteski, Y.~Li. Algorithms and matching lower bounds for approximately-convex optimization. NeurIPS, 2016.
+\bibitem{prokhorov} B.~Prokhorov, S.~Chebykin, A.~Gasnikov, A.~Beznosikov. Gradient-free approaches is a key to an efficient interaction with Markovian stochasticity. arXiv:2601.01160, 2026.
+\end{thebibliography}
+\end{document}
