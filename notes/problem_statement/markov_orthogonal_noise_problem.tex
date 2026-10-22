@@ -1,0 +1,107 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{FreeSerif}\setsansfont{FreeSans}\setmonofont{FreeMono}
+\usepackage{polyglossia}\setdefaultlanguage{russian}\setotherlanguage{english}
+\newfontfamily\cyrillicfont{FreeSerif}\newfontfamily\cyrillicfontsf{FreeSans}\newfontfamily\cyrillicfonttt{FreeMono}
+\usepackage[margin=1.7cm,top=1.4cm,bottom=1.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem,booktabs,xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+\setlist{itemsep=2pt,topsep=3pt}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\lVert #1\rVert}\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\Dmax}{\Delta_{\max}}
+\theoremstyle{definition}\newtheorem{definition}{Определение}
+\tcbset{box/.style={colback=blue!3,colframe=blue!50!black,boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=4pt,bottom=4pt,fonttitle=\bfseries}}
+\title{\textbf{Допустимый уровень детерминированного шума,\\ ортогонального рандомизации в среднем по марковскому состоянию}}
+\author{Рабочая постановка задачи\\ И.~Брыжиков (МФТИ), октябрь 2026}
+\date{}
+\begin{document}\sloppy
+\maketitle
+\vspace{-1.5em}
+
+\section*{1. Контекст}
+Рассматривается безгради­ентная минимизация выпуклой функции $f$ на шаре радиуса $R$ в $\R^d$ двухточечным методом
+\[
+\hat g(x)=\frac{d}{2\gamma}\big(O(x+\gamma e)-O(x-\gamma e)\big)\,e,\qquad e\sim\mathrm{Unif}(S^{d-1}),
+\]
+где $O$ — значение функции с ошибкой, $\gamma$ — радиус сглаживания.
+
+\paragraph{Враждебная модель.} Оракул $O(x)=f(x)+\delta(x)$, $\abs{\delta(x)}\le\Delta$, ошибка фиксирована (повторный запрос даёт тот же ответ) и может произвольно зависеть от $x$. Тогда добавка шума в оценке градиента даёт \emph{смещение} порядка $\sqrt d\,\Delta/\gamma$, и для точности $\varepsilon$ нужно $\Delta\lesssim\varepsilon\gamma/(\sqrt d R)$. Максимальный допустимый уровень шума в этой модели теперь найден с точностью до логарифмов \cite{pasechnyuk,risteski}:
+\begin{align*}
+\Dmax^{\rm adv}&\asymp\frac{\varepsilon^2}{\sqrt d\,MR} && \text{($M$-липшицевы $f$)},\\
+\Dmax^{\rm adv}&\asymp\frac{\varepsilon^{3/2}}{\sqrt d\,\sqrt L\,R} && \text{($L$-гладкие $f$, липшицевы с $M\sim\sqrt{L\varepsilon}$)}.
+\end{align*}
+
+\paragraph{Условие ортогональности рандомизации} (обзор \cite{survey}, §4.4):
+\begin{equation}\label{eq:orth}
+\E_e\big[\delta(x+\gamma e)\,e\big]=0\qquad\forall x .
+\end{equation}
+При \eqref{eq:orth} шум не даёт смещения и входит только в дисперсию оценки; эвристически остаётся условие $d\Delta^2/\gamma^2\lesssim M^2$, то есть $\Delta\lesssim M\gamma/\sqrt d$ (для липшицевых $f$ при $\gamma\sim\varepsilon/M$ это $\varepsilon/\sqrt d$ — в $MR/\varepsilon$ раз больше враждебного порога). Однако поточечно, при каждом $x$, условие \eqref{eq:orth} на практике почти не выполняется. Типичная ситуация — оно выполняется \emph{в среднем по некоторому состоянию}, которое меняется со временем.
+
+\paragraph{Марковский шум.} В \cite{prokhorov} показано, что для безградиентных методов с марковским стохастическим шумом (время перемешивания $\tau$, цепь не зависит от итераций) цена корреляции аддитивна: сложность по вызовам растёт как $d+\tau$, а не $d\tau$. Детерминированная ошибка там учитывается только как ограниченная враждебная.
+
+\section*{2. Класс шумов}
+\begin{definition}[Шум, ортогональный рандомизации в среднем по марковскому состоянию]
+Оракул на шаге $k$ возвращает $O(x,s_k)=f(x)+\delta(x,s_k)$, причём оба запроса двухточечной оценки делаются при одном и том же состоянии $s_k$. Предполагается:
+\begin{enumerate}[label=(\roman*)]
+\item $\abs{\delta(x,s)}\le\Delta$ для всех $x,s$;
+\item $\{s_k\}$ — равномерно геометрически эргодическая марковская цепь со стационарным законом $\pi$ и временем перемешивания $\tau$;
+\item условие \eqref{eq:orth} выполняется под стационарным законом:
+\begin{equation}\label{eq:orth-pi}
+\E_{s\sim\pi}\,\E_e\big[\delta(x+\gamma e,s)\,e\big]=0\qquad\forall x ;
+\end{equation}
+при фиксированном $s$ шум может быть смещён.
+\end{enumerate}
+Класс обозначается $\mathcal N(\Delta,\tau,\gamma)$.
+\end{definition}
+
+\paragraph{Ленивость.} Основной механизм медленного перемешивания — \emph{ленивость} цепи: с вероятностью $\alpha$ состояние на шаге не меняется,
+\[
+P_{\rm lazy}=\alpha I+(1-\alpha)P,\qquad \text{среднее время удержания}\ \tfrac1{1-\alpha},\qquad \tau\gtrsim\tfrac1{1-\alpha}.
+\]
+Пока состояние $s$ удерживается, шум $\delta(\cdot,s)$ один и тот же, и его смещение при фиксированном $s$ повторяется, а не усредняется: за $\sim\tau$ шагов детерминированная ошибка ведёт себя как враждебная. Условие \eqref{eq:orth-pi} начинает «работать» только на масштабе времени перемешивания. В предельном случае $\alpha=1$ на части состояний (поглощение) цепь не перемешивается вовсе.
+
+\paragraph{Частные случаи.}
+\begin{itemize}
+\item $\tau=1$ (состояния независимы) — стохастическая аксиоматика условия \eqref{eq:orth};
+\item внешняя марковская цепь данных — модель \cite{prokhorov} с дополнительной детерминированной компонентой;
+\item \emph{округление} значений к сетке $u\mathbb Z$: состояние — положение $f(x)$ на сетке (сдвиг). Его двигают и данные, и сам метод: на шаге с нулевой разностью округлённых значений («ничья») точка не сдвигается, и при тех же данных сдвиг повторяется. Это ленивая цепь с вероятностью удержания $\alpha=P_{\rm tie}(\omega,r)=2\Phi\big((\tfrac12-\abs\omega)/r\big)-1$, где $\omega$ — сдвиг, $r=\gamma\norm{\nabla f}/u$; ядро цепи зависит от итераций, а при $r\ll1$ и неизменных данных состояния в середине ячейки практически поглощающие. Для этого случая условие \eqref{eq:orth-pi} проверено точно: для аффинной на шаблоне $f$ и гауссовых направлений $\E_e\hat g=\kappa(c,r)\nabla f$, где $\kappa$ — обёрнутая гауссиана сдвига $c$ с шириной $r=\gamma\norm{\nabla f}/u$, и $\int_0^1\kappa\,dc=1$.
+\end{itemize}
+
+\section*{3. Задача}
+\begin{tcolorbox}[box,title={Цель}]
+Для класса $\mathcal N(\Delta,\tau,\gamma)$ и классов липшицевых и гладких выпуклых функций определить
+\[
+\Dmax(\varepsilon,d,\tau,\gamma)=\sup\big\{\Delta:\ \exists\,\mathcal A\ \ \forall f\ \ \forall\delta\in\mathcal N(\Delta,\tau,\gamma):\ \ \E f(\hat x_{\mathcal A})-f^*\le\varepsilon\big\},
+\]
+где $\mathcal A$ — алгоритм с полиномиальным числом вызовов оракула,
+и получить для него двусторонние оценки:
+\begin{itemize}
+\item \textbf{сверху} — конструкцией трудной функции и допустимого шума, при которых никакой алгоритм не достигает точности $\varepsilon$ (сторона существования, по схеме \cite{pasechnyuk});
+\item \textbf{снизу} — двухточечным методом с явными параметрами (радиус, батч, шаг), достигающим $\varepsilon$ при данном $\Delta$.
+\end{itemize}
+Сравнить полученные пороги с враждебным $\Dmax^{\rm adv}$.
+\end{tcolorbox}
+
+\paragraph{Ожидаемая картина.}
+\[
+\Dmax^{\rm adv}\ \lesssim\ \Dmax(\varepsilon,d,\tau,\gamma)\ \lesssim\ \frac{M\gamma}{\sqrt d}.
+\]
+Пока цепь перемешивается, порог определяется дисперсией и ухудшается с ростом $\tau$, то есть с ростом ленивости $\alpha$: смещение копится в течение времени удержания. Когда перемешивание ломается ($\alpha\to1$, поглощающие состояния), возвращается враждебный режим. Отдельный вопрос — как порог зависит от ленивости, порождённой самим методом (округление), а не внешней цепью.
+
+\paragraph{Порядок работы.}
+\begin{enumerate}
+\item $\tau=1$: переписать оценку §4.4 \cite{survey} через дисперсию; построить трудную функцию для класса с условием \eqref{eq:orth} в стохастической форме.
+\item Внешняя цепь, $\tau>1$: перенести технику \cite{prokhorov} (направление на каждый сэмпл, многоуровневый Монте-Карло) на смещённую при фиксированном состоянии компоненту; получить зависимость порога от $\tau$.
+\item Ленивая цепь, зависящая от итераций (округление): связь ленивости с вероятностью ничьей, условия перемешивания, поглощающие состояния, сравнение с враждебным порогом.
+\end{enumerate}
+
+\begin{thebibliography}{9}\small
+\bibitem{survey} A.~Gasnikov, D.~Dvinskikh, P.~Dvurechensky, E.~Gorbunov, A.~Beznosikov, A.~Lobanov. Randomized gradient-free methods in convex optimization. \emph{Encyclopedia of Optimization}; arXiv:2211.13566.
+\bibitem{pasechnyuk} D.~Pasechnyuk-Vilensky, I.~Pavlov, M.~Takáč, A.~Gasnikov. Information-theoretic upper bounds for deterministic noise in zeroth-order convex optimization. arXiv:2306.16371v5, 2026.
+\bibitem{risteski} A.~Risteski, Y.~Li. Algorithms and matching lower bounds for approximately-convex optimization. NeurIPS, 2016.
+\bibitem{prokhorov} B.~Prokhorov, S.~Chebykin, A.~Gasnikov, A.~Beznosikov. Gradient-free approaches is a key to an efficient interaction with Markovian stochasticity. arXiv:2601.01160, 2026.
+\end{thebibliography}
+\end{document}
