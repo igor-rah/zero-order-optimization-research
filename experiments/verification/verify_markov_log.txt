@@ -1,0 +1,28 @@
+PASS kernel r=0.065 omega=0.0: closed=1.000000 mc=1.000000 tol=0.004
+PASS kernel r=0.065 omega=0.2: closed=0.999996 mc=0.999996 tol=0.004
+PASS kernel r=0.065 omega=0.45: closed=0.558244 mc=0.558319 tol=0.004
+PASS kernel r=0.065 omega=-0.3: closed=0.997909 mc=0.997946 tol=0.004
+PASS kernel r=0.15 omega=0.0: closed=0.999142 mc=0.999121 tol=0.004
+PASS kernel r=0.15 omega=0.2: closed=0.954500 mc=0.954377 tol=0.004
+PASS kernel r=0.15 omega=0.45: closed=0.261117 mc=0.261613 tol=0.004
+PASS kernel r=0.15 omega=-0.3: closed=0.817578 mc=0.817647 tol=0.004
+PASS kernel r=0.5 omega=0.0: closed=0.682689 mc=0.682652 tol=0.004
+PASS kernel r=0.5 omega=0.2: closed=0.451494 mc=0.451833 tol=0.004
+PASS kernel r=0.5 omega=0.45: closed=0.079656 mc=0.079836 tol=0.004
+PASS kernel r=0.5 omega=-0.3: closed=0.310843 mc=0.311426 tol=0.004
+PASS kernel r=1.0 omega=0.0: closed=0.382925 mc=0.383312 tol=0.004
+PASS kernel r=1.0 omega=0.2: closed=0.235823 mc=0.235665 tol=0.004
+PASS kernel r=1.0 omega=0.45: closed=0.039878 mc=0.039947 tol=0.004
+PASS kernel r=1.0 omega=-0.3: closed=0.158519 mc=0.158346 tol=0.004
+PASS average kernel = tie law, r=0.065: closed=0.896275 mc=0.896275 tol=1e-06
+PASS average kernel = tie law, r=0.25: closed=0.609548 mc=0.609548 tol=1e-06
+PASS average kernel = tie law, r=0.5: closed=0.368746 mc=0.368746 tol=1e-06
+PASS average kernel = tie law, r=1.3: closed=0.151575 mc=0.151575 tol=1e-06
+PASS absorption probability: closed=0.394018 mc=0.394540 tol=0.003
+PASS dither TV sig=0.3: TV=1.077e-01 <= bound=1.700e-01
+PASS |E exp(2 pi i c)| sig=0.3: closed=0.169225 mc=0.168807 tol=0.003
+PASS dither TV sig=0.5: TV=4.578e-03 <= bound=7.192e-03
+PASS |E exp(2 pi i c)| sig=0.5: closed=0.007192 mc=0.006262 tol=0.003
+PASS dither TV sig=0.75: TV=9.589e-06 <= bound=1.506e-05
+PASS |E exp(2 pi i c)| sig=0.75: closed=0.000015 mc=0.000984 tol=0.003
+ALL PASS
