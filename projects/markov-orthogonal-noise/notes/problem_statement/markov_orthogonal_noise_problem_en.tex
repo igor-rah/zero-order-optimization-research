@@ -43,17 +43,19 @@ Under \eqref{eq:orth} the noise causes no bias and enters only the variance of t
 
 \section*{2. Noise class}
 \begin{definition}[Noise orthogonal to the randomization on average over a Markov state]
-At step $k$ the oracle returns $O(x,s_k)=f(x)+\delta(x,s_k)$, and both queries of the two-point estimate are made in the same state $s_k$. We assume:
+The algorithm works in rounds $k=1,2,\dots$. In each round the chain makes exactly one step, $s_{k+1}\sim P(s_k,\cdot)$, independently of the algorithm (exogenous chain; the initial law is arbitrary); the algorithm submits at most $q$ points of the ball $B_R$ ($q=2$ below: both queries of the two-point estimate are made in the same state $s_k$), chosen from its internal randomness and all previous answers, and receives $O(y,s_k)=f(y)+\delta(y,s_k)$ for each; every round, with or without queries, consumes the budget. We assume:
 \begin{enumerate}[label=(\roman*)]
 \item $\abs{\delta(x,s)}\le\Delta$ for all $x,s$;
 \item $\{s_k\}$ is a uniformly geometrically ergodic Markov chain with stationary law $\pi$ and mixing time $\tau$;
-\item condition \eqref{eq:orth} holds under the stationary law:
+\item $\delta$ is jointly Borel in $(x,s)$, and condition \eqref{eq:orth} holds under the stationary law for every radius $\gamma\in(0,\gamma_0]$:
 \begin{equation}\label{eq:orth-pi}
-\E_{s\sim\pi}\,\E_e\big[\delta(x+\gamma e,s)\,e\big]=0\qquad\forall x ;
+\E_{s\sim\pi}\,\E_e\big[\delta(x+\gamma e,s)\,e\big]=0\qquad\text{for a.e.\ } x\in B_{R-\gamma}\ \text{and all}\ \gamma\in(0,\gamma_0];
 \end{equation}
-for a fixed $s$ the noise may be biased.
+equivalently, $\E_{s\sim\pi}\delta(x,s)=c$ for a.e.\ $x\in B_R$ and some constant $c$. For a fixed $s$ the noise may be biased.
 \end{enumerate}
-The class is denoted $\mathcal N(\Delta,\tau,\gamma)$.
+The class is denoted $\mathcal N(\Delta,\tau)$; it does not depend on $\gamma$, which becomes a parameter of the algorithm.
+
+\paragraph{Fixed radius (remark).} If \eqref{eq:orth-pi} is required at one radius $\gamma$ only (class $\mathcal N(\Delta,\tau,\gamma)$), the mean $m=\E_\pi\delta$ need not be constant: for bounded $m$ on $\R^d$, $\widehat{m-c}$ is a single layer on the spheres $|\xi|=j_{d/2,k}/\gamma$ (``Bessel'' noise; on $B_R$ the class is larger). Such $m$ acts as a systematic error at other radii (hypothesis H6). Two radii $\gamma_1,\gamma_2$ with $\gamma_1/\gamma_2\notin\{j_{d/2,k}/j_{d/2,l}\}$ already force $m\equiv c$ on $\R^d$ (on a ball this is cited, not re-proved), but a second radius above the first is quantitatively almost blind in high dimension.
 \end{definition}
 
 \paragraph{Laziness.} The main mechanism of slow mixing is the \emph{laziness} of the chain: with probability $\alpha$ the state does not change at a step,
@@ -64,19 +66,18 @@ While a state $s$ is held, the noise $\delta(\cdot,s)$ is the same, and its bias
 
 \paragraph{Special cases.}
 \begin{itemize}
-\item $\tau=1$ (independent states): the stochastic axiomatics of condition \eqref{eq:orth};
+\item $\tau=1$ (independent states): the stochastic axiomatics of condition \eqref{eq:orth}; for two-point methods of radius $\gamma$ (class $\mathcal A^{2\rm pt}_\gamma$ of \S3), convex $M$-Lipschitz $f$, $\gamma\le\varepsilon/(4M)$, $\varepsilon<MR/8$ and $T\ge1+16d^2M^2R^2/((d-1)\varepsilon^2)$, report H3 proves $\frac{\varepsilon\gamma\sqrt{T-1}}{4dR}\le\Dmax^{\E,2\rm pt,\gamma}\le32\pi\frac{\varepsilon\gamma\sqrt T}{dR}$, i.e.\ the threshold $\Theta(\varepsilon\gamma\sqrt T/(dR))$; in both bounds $\Delta$ may be replaced by the oscillation $\omega_\delta(2\gamma)/2=\frac12\sup_s\sup_{\norm{y-z}\le2\gamma}\abs{\delta(y,s)-\delta(z,s)}$;
 \item an external Markov data chain: the model of \cite{prokhorov} with an additional deterministic component;
-\item \emph{rounding} of function values to the grid $u\mathbb Z$: the state is the position of $f(x)$ on the grid (the offset). It is moved both by the data and by the method itself: on a step where the two rounded values coincide (a ``tie'') the point does not move, and with the same data the offset repeats. This is a lazy chain with holding probability $\alpha=P_{\rm tie}(\omega,r)=2\Phi\big((\tfrac12-\abs\omega)/r\big)-1$, where $\omega$ is the offset and $r=\gamma\norm{\nabla f}/u$; the kernel of the chain depends on the iterates, and for $r\ll1$ and unchanged data the states in the middle of a cell are practically absorbing. For this case condition \eqref{eq:orth-pi} has been verified exactly: for $f$ affine on the stencil and Gaussian directions, $\E_e\hat g=\kappa(c,r)\nabla f$, where $\kappa$ is a wrapped Gaussian of the offset $c$ with width $r=\gamma\norm{\nabla f}/u$, and $\int_0^1\kappa\,dc=1$.
+\item \emph{rounding} of function values to the grid $u\mathbb Z$: the state is the position of $f(x)$ on the grid (the offset). It is moved both by the data and by the method itself: on a step where the two rounded values coincide (a ``tie'') the point does not move, and with the same data the offset repeats. This is a lazy chain with holding probability $\alpha=P_{\rm tie}(\omega,r)=2\Phi\big((\tfrac12-\abs\omega)/r\big)-1$, where $\omega$ is the offset and $r=\gamma\norm{\nabla f}/u$; the kernel of the chain depends on the iterates, and for $r\ll1$ and unchanged data the states in the middle of a cell are practically absorbing. For this case condition \eqref{eq:orth-pi} has been verified exactly: for $f$ affine on the stencil and Gaussian directions, $\E_e\hat g=\kappa(c,r)\nabla f$, where $\kappa$ is a wrapped Gaussian of the offset $c$ with width $r=\gamma\norm{\nabla f}/u$, and $\int_0^1\kappa\,dc=1$. Directly: with a uniform offset, $\E_c\delta$ is the period mean of the rounding sawtooth, a constant, so \eqref{eq:orth-pi} holds for all radii. The rounding chain, however, is driven by the method, which the exogenous-chain protocol above excludes; rounding belongs to $\mathcal N$ only after an extension to method-induced chains (hypothesis H8).
 \end{itemize}
 
 \section*{3. Problem}
 \begin{tcolorbox}[box,title={Goal}]
-For the class $\mathcal N(\Delta,\tau,\gamma)$ and the classes of Lipschitz and smooth convex functions, determine
+For the class $\mathcal N(\Delta,\tau)$ and the classes of Lipschitz and smooth convex functions, determine, as a function of the budget $T$ (number of rounds of the protocol of \S2),
 \[
-\Dmax(\varepsilon,d,\tau,\gamma)=\sup\big\{\Delta:\ \exists\,\mathcal A\ \ \forall f\ \ \forall\delta\in\mathcal N(\Delta,\tau,\gamma):\ \ \E f(\hat x_{\mathcal A})-f^*\le\varepsilon\big\},
+\Dmax(\varepsilon,\beta;d,\tau;T)=\sup\big\{\Delta:\ \exists\,\mathcal A\ \text{with $T$ rounds}\ \ \forall f\ \ \forall\delta\in\mathcal N(\Delta,\tau):\ \ \mathbb P\big(f(\hat x_{\mathcal A})-f^*\le\varepsilon\big)\ge1-\beta\big\},
 \]
-where $\mathcal A$ is an algorithm with a polynomial number of oracle calls,
-and obtain two-sided bounds on it:
+and its expectation variant $\Dmax^{\E}(\varepsilon;d,\tau;T)$, with the requirement $\E f(\hat x_{\mathcal A})-f^*\le\varepsilon$; by Markov's inequality $\Dmax(\varepsilon,\beta;\cdot)\ge\Dmax^{\E}(\beta\varepsilon;\cdot)$. The \emph{complexity-preserving level} is $\Delta_{\rm cp}(C)=\Dmax$ at $T=C\,dM^2R^2/\varepsilon^2$. For two-point methods of radius $\gamma$ we write $\Dmax^{2\rm pt,\gamma}$: the supremum is taken over the class $\mathcal A^{2\rm pt}_\gamma$ of algorithms that in round $t$ draw a direction $e_t\in S^{d-1}$ from a law fixed in advance (it may depend on $t$ and on the internal randomness, not on previous answers), choose a centre $y_t$ and a radius $\gamma_t\in(0,\gamma]$ from all previous answers, and observe only the difference $O(y_t+\gamma_te_t,s_t)-O(y_t-\gamma_te_t,s_t)$ (report H3, Def.~2.2; the class contains ZO-SGD with any step rule, batching, averaging and restarts). Whether $\Dmax$ is meant for this class or for all algorithms is open: under the conditions of report H3, for $\mathcal A^{2\rm pt}_\gamma$ the case $\tau=1$ is settled up to constants, while for all algorithms it is only bracketed. Without a bound on $T$ (in particular with a polynomial number of oracle calls) $\Dmax=\infty$ (report H1: for this class, and for the fixed-radius class with $\gamma\le\varepsilon/(4M)$). Obtain two-sided bounds on $\Dmax(T)$:
 \begin{itemize}
 \item \textbf{upper bound}: a construction of a hard function and an admissible noise for which no algorithm reaches accuracy $\varepsilon$ (the existence side, following the scheme of \cite{pasechnyuk});
 \item \textbf{lower bound}: a two-point method with explicit parameters (radius, batch, step) that reaches $\varepsilon$ for the given $\Delta$.
@@ -86,13 +87,14 @@ Compare the resulting thresholds with the adversarial $\Dmax^{\rm adv}$.
 
 \paragraph{Expected picture.}
 \[
-\Dmax^{\rm adv}\ \lesssim\ \Dmax(\varepsilon,d,\tau,\gamma)\ \lesssim\ \frac{M\gamma}{\sqrt d}.
+\Dmax^{\rm adv}\ \lesssim\ \Delta_{\rm cp}(C)=\Dmax\big(T=C\,dM^2R^2/\varepsilon^2\big)\ \lesssim\ \frac{M\gamma}{\sqrt d}.
 \]
+The lower side is proven in report H1 in the expectation variant: $\Delta_{\rm cp}(C)\ge M\gamma/\sqrt{2d+8\tau-3}$ for $\gamma\le\varepsilon/(4M)$ ($\gamma<\varepsilon/(4M)$ in the a.e.\ reading of \eqref{eq:orth-pi}) and $C\ge\frac{149}4(6+t_0/d)$, $t_0=\tau\lceil\log_2(16MR/\varepsilon)\rceil$; e.g.\ $C=261$ if $t_0\le d$. For $\tau\gg d$ the required $C$ grows like $\tau\log(MR/\varepsilon)/d$. For independent states ($\tau=1$), convex $M$-Lipschitz $f$, $\gamma\le\varepsilon/(4M)$ and $\varepsilon<MR/8$, report H3 gives $\Delta^{\E}_{\rm cp}(24)\ge1.034\,M\gamma/\sqrt d$ (expectation variant; ZO-SGD with one idle round, no burn-in). The upper side is proven in report H3 for two-point methods of radius $\gamma$ (the class $\mathcal A^{2\rm pt}_\gamma$ defined above): $\Delta^{\E,2\rm pt,\gamma}_{\rm cp}(C)\le32\pi\sqrt C\,M\gamma/\sqrt d$ for $\varepsilon<MR/8$; the hard instance (linear $f$, rough cell noise with density $\cos^2(\pi t/2)$) has independent states and lies in $\mathcal N(\Delta,\tau)$ for every $\tau$. For arbitrary algorithms the upper side is open.
 While the chain mixes, the threshold is determined by the variance and deteriorates as $\tau$ grows, i.e.\ as the laziness $\alpha$ grows: the bias accumulates over the holding time. When mixing breaks down ($\alpha\to1$, absorbing states), the adversarial regime returns. A separate question is how the threshold depends on laziness generated by the method itself (rounding) rather than by an external chain.
 
 \paragraph{Plan of work.}
 \begin{enumerate}
-\item $\tau=1$: rewrite the bound of \S4.4 \cite{survey} in terms of the variance; construct a hard function for the class with condition \eqref{eq:orth} in stochastic form.
+\item $\tau=1$: rewrite the bound of \S4.4 \cite{survey} in terms of the variance; construct a hard function for the class with condition \eqref{eq:orth} in stochastic form. (Done in report H3 for two-point methods of radius $\gamma$ with direction laws fixed in advance; open for adaptive direction laws and for arbitrary algorithms.)
 \item External chain, $\tau>1$: transfer the technique of \cite{prokhorov} (a direction per sample, multilevel Monte Carlo) to the component that is biased for a fixed state; obtain the dependence of the threshold on $\tau$.
 \item Lazy chain that depends on the iterates (rounding): relation between laziness and the tie probability, mixing conditions, absorbing states, comparison with the adversarial threshold.
 \end{enumerate}
