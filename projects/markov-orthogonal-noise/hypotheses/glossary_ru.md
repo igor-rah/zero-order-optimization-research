@@ -1,0 +1,139 @@
+# Glossary EN → RU
+
+Terminology for the Russian versions of the hypothesis reports (report_ru.tex). One term per line, "English — русский", in alphabetical order. Established Russian terms of the field take precedence over calques; where none exists, the English term is kept in parentheses at first use.
+
+- Abel summation — преобразование Абеля
+- adversarial noise — враждебный шум
+- algorithm class — класс алгоритмов
+- all-radii class — класс всех радиусов
+- anti-state — антисостояние
+- anytime step — шаг без фиксированного горизонта (anytime)
+- Assouad's lemma — лемма Ассуада
+- ball averaging — усреднение по шару
+- ball smoothing — сглаживание по шару
+- bandit methods — бандитные методы
+- batch — пакет (batch)
+- batching over states — пакетирование по состояниям (batching)
+- Bessel wave — бесселева волна
+- Bhattacharyya coefficient — коэффициент Бхаттачарьи
+- bias — смещение
+- bootstrap — бутстреп
+- bottleneck — узкое место
+- budget (round budget) — бюджет (бюджет раундов)
+- burn-in — прогрев (burn-in)
+- cell noise (rough) — клеточный шум (негладкий)
+- collapse test — тест совмещения (collapse)
+- common random numbers — общие случайные числа
+- complexity-preserving budget — бюджет, сохраняющий сложность
+- complexity-preserving level — уровень, сохраняющий сложность
+- confidence boosting — усиление уверенности (confidence boosting)
+- confirmed (verdict) — подтверждена
+- confirmed in a refined form — подтверждена в уточнённой форме
+- confirmed numerically — подтверждено численно
+- consistency check — проверка согласованности
+- coupling — каплинг (coupling)
+- crossover — пересечение (crossover)
+- cutting-plane methods — методы секущих плоскостей
+- data processing inequality — неравенство обработки данных
+- decodable noise — декодируемый шум
+- deviation log — журнал отклонений
+- direction law — распределение направлений
+- dither — дизеринг
+- divergence theorem — теорема о дивергенции
+- error floor — плато ошибки (floor)
+- exogenous chain — экзогенная цепь
+- expectation variant — вариант «в среднем»
+- expected picture — ожидаемая картина
+- false valley — ложная долина
+- Fisher information — информация Фишера
+- fixed-radius class — класс с фиксированным радиусом
+- fork — развилка
+- formulation of the hypothesis — формулировка гипотезы
+- frozen state — замороженное состояние
+- hard instance — трудный пример
+- hash noise — хэш-шум
+- Hellinger distance — расстояние Хеллингера
+- heuristic threshold — эвристический порог
+- hybrid argument — гибридное рассуждение
+- idealised oracle — идеализированный оракул
+- idle round — холостой раунд
+- inexact oracle — неточный оракул
+- iterate averaging — усреднение итераций
+- jointly measurable — совместно измеримый
+- knee — излом (knee)
+- lazy chain — ленивая цепь
+- Le Cam's inequality — неравенство Ле Кама
+- location family — семейство сдвигов
+- mean-periodic function — периодическая в среднем функция
+- mean-square pair oscillation — среднеквадратичное колебание пары
+- method-induced chain — цепь, порождённая методом
+- mixing time — время перемешивания
+- mollifier — сглаживающее ядро (mollifier)
+- momentum — импульс (momentum)
+- multiplier (ball, sphere) — мультипликатор (шара, сферы)
+- noise instance — экземпляр шума
+- noise-dominated region — область преобладания шума
+- non-adaptive (direction law) — неадаптивное (распределение направлений)
+- non-expansiveness (of the projection) — нерастягиваемость (проекции)
+- offset (of the rounding grid) — сдвиг сетки (offset)
+- one-point method — одноточечный метод
+- online-to-batch conversion — переход от онлайн-постановки к пакетной (online-to-batch conversion)
+- oscillation — колебание (oscillation)
+- pilot run — пилотный расчёт
+- plane wave — плоская волна
+- Pompeiu property — свойство Помпейю
+- positive control — положительный контроль
+- pre-registered — заранее зафиксированный
+- probability variant — вариант «по вероятности»
+- progress subset — подмножество с продвижением (progress)
+- proven under a condition — доказано при условии
+- proven — доказано
+- query centre — центр запроса
+- query — запрос
+- range-normalised — нормированный на размах
+- reading (of a condition) — прочтение (условия)
+- refutation criterion — критерий опровержения
+- refuted (claim status) — опровергнуто
+- refuted (verdict) — опровергнута
+- regular class — регулярный класс
+- remains a hypothesis — остаётся гипотезой
+- rerun — повторный запуск
+- resampling chain — цепь с перевыбором
+- restart — рестарт
+- revision history — история редакций
+- rough noise — негладкий шум
+- round — раунд
+- round-to-nearest — округление до ближайшего узла
+- run (of an experiment) — запуск
+- sanity check — проверка на здравый смысл (sanity check)
+- saturation — насыщение
+- scope of the novelty — границы новизны
+- seed — зерно генератора (seed)
+- self-dither — самодизеринг
+- sequential bound — последовательная оценка
+- shared dither — общий дизеринг (shared dither)
+- single layer — простой слой
+- smoothing floor — плато сглаживания
+- smoothing radius — радиус сглаживания
+- spectral gap — спектральная щель
+- spectral synthesis — спектральный синтез
+- standard Borel space — стандартное борелевское пространство
+- stationary law — стационарное распределение
+- stencil — шаблон (stencil)
+- step rule — правило выбора шага
+- summary card — карточка-резюме
+- tail averaging — усреднение по хвосту
+- tempered distribution — обобщённая функция умеренного роста
+- tie (rounding) — совпадение (tie)
+- total variation — полная вариация
+- transcript — транскрипт (transcript)
+- trivial error — тривиальная ошибка
+- tuned wave — настроенная волна
+- two-point estimator — двухточечная оценка
+- two-point method — двухточечный метод
+- uniform geometric ergodicity — равномерная геометрическая эргодичность
+- unresolved — не решена
+- upper envelope — верхняя огибающая
+- variance heuristic — эвристика по дисперсии
+- withdrawn (claim) — отозвано
+- zeroth-order (gradient-free) method — безградиентный метод (метод нулевого порядка)
